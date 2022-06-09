@@ -1,3 +1,4 @@
+/*
 package ru.job4j.iterator;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ public class MatrixIt implements Iterator<Integer> {
         }
 
         while (data[row].length == 0) {
-            if (data.length == row + 1 && )
+            if (data.length == row + 1) {
             row++;
         }
 
@@ -44,3 +45,4 @@ public class MatrixIt implements Iterator<Integer> {
         return data[row][column++];
     }
 }
+*/
