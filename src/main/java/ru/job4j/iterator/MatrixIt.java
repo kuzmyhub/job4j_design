@@ -1,4 +1,3 @@
-/*
 package ru.job4j.iterator;
 
 import java.util.Iterator;
@@ -15,26 +14,7 @@ public class MatrixIt implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        if (data.length == 0) {
-            return false;
-        }
-
-        while (data[row].length == 0) {
-            if (data.length == row + 1) {
-            row++;
-        }
-
-        if (data[row].length > column) {
-            return true;
-        } else if (data[row].length == column) {
-            row++;
-            column = 0;
-            while (data[row].length == 0) {
-                row++;
-            }
-            return true;
-        }
-        return false;
+        return data.length > row && data[row].length > column;
     }
 
     @Override
@@ -45,4 +25,3 @@ public class MatrixIt implements Iterator<Integer> {
         return data[row][column++];
     }
 }
-*/
