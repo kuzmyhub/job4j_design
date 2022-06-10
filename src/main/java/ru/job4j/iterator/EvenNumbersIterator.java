@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class EvenNumbersIterator implements Iterator<Integer> {
     private int[] data;
-    private int index;
+    private int index = 0;
 
     public EvenNumbersIterator(int[] data) {
         this.data = data;
@@ -14,12 +14,12 @@ public class EvenNumbersIterator implements Iterator<Integer> {
     @Override
     public boolean hasNext() {
         for (int i = index; i < data.length; i++) {
+            index = i;
             if (data[i] % 2 == 0) {
-                index = i;
                 break;
             }
         }
-        return true;
+        return data[index] % 2 == 0;
     }
 
     @Override
