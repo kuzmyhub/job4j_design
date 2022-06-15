@@ -1,6 +1,7 @@
 package ru.job4j;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Hello world!
