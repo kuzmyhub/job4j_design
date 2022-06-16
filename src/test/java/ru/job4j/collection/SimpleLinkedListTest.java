@@ -1,7 +1,9 @@
 package ru.job4j.collection;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -35,6 +37,7 @@ public class SimpleLinkedListTest {
         assertThat(it.hasNext(), is(true));
     }
 
+    @Test
     public void whenAddIterNextOne() {
         LinkedList<Integer> list = new SimpleLinkedList<>();
         list.add(1);
@@ -85,5 +88,24 @@ public class SimpleLinkedListTest {
         assertThat(second.hasNext(), is(true));
         assertThat(second.next(), is(2));
         assertThat(second.hasNext(), is(false));
+    }
+
+    @Test (expected = ConcurrentModificationException.class)
+    public void whenCollectionChangeAfterCreateIter() {
+        LinkedList<Integer> list = new SimpleLinkedList<>();
+        list.add(1);
+        list.add(2);
+        Iterator<Integer> it = list.iterator();
+        list.add(3);
+        it.next();
+    }
+
+    @Test
+    public void whenAddNullThenMustBeSameBehavior() {
+        LinkedList<Integer> list = new SimpleLinkedList<>();
+        list.add(null);
+        list.add(null);
+        Assert.assertNull(list.get(0));
+        Assert.assertNull(list.get(1));
     }
 }
