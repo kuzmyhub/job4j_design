@@ -14,14 +14,15 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         this.container = (T[]) new Object[capacity];
     }
 
-    public T[] grow() {
+    private T[] grow() {
         int oldCapacity = container.length;
+        int newCapacity;
         if (oldCapacity > 0) {
-            int newCapacity = oldCapacity * 2;
-            return Arrays.copyOf(container, newCapacity);
+            newCapacity = oldCapacity * 2;
         } else {
-            return (T[]) new Object[1];
+            newCapacity = 1;
         }
+        return  Arrays.copyOf(container, newCapacity);
     }
 
     @Override
@@ -36,16 +37,14 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T oldValue = container[index];
+        T oldValue = get(index);
         container[index] = newValue;
         return oldValue;
     }
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T oldValue = container[index];
+        T oldValue = get(index);
         modCount++;
         final int newSize = size - 1;
         if (newSize > index) {
@@ -77,6 +76,9 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return cursor < size;
             }
 
@@ -84,8 +86,6 @@ public class SimpleArrayList<T> implements SimpleList<T> {
             public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                } else if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
                 }
                 return container[cursor++];
             }
