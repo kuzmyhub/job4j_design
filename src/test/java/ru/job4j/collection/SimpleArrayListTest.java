@@ -27,7 +27,7 @@ public class SimpleArrayListTest {
     }
 
     @Test
-    public void whenAddAndGetVVyCorrectIndex() {
+    public void whenAddAndGetByCorrectIndex() {
         Assert.assertEquals(Integer.valueOf(1), list.get(0));
     }
 
@@ -56,7 +56,7 @@ public class SimpleArrayListTest {
     }
 
     @Test
-    public void whenAddNullThnMustBeSameBehavior() {
+    public void whenAddNullThenMustBeSameBehavior() {
         list = new SimpleArrayList<>(3);
         list.add(null);
         list.add(null);

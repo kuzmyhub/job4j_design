@@ -48,7 +48,9 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         modCount++;
         final int newSize = size - 1;
         if (newSize > index) {
-            System.arraycopy(container, index + 1, container, index, newSize - index);
+            System.arraycopy(
+                    container, index + 1, container, index, newSize - index
+            );
         }
         container[newSize] = null;
         size--;
