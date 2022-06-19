@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
+import java.nio.file.LinkPermission;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +33,24 @@ public class ListUtilsTest {
     }
 
     @Test
-    public void whenRemoveIfValueIsEven() {
+    public void whenValueIsEvenThenRemove() {
         List<Integer> input = new ArrayList<>(Arrays.asList(2, 3, 4));
         ListUtils.removeIf(input, n -> n % 2 == 0);
         assertThat(input, is(Arrays.asList(3)));
+    }
+
+    @Test
+    public void whenValueIsEvenThenSet() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(2, 3, 4));
+        ListUtils.replaceIf(input, n -> n % 2 == 0, 1);
+        assertThat(input, is(Arrays.asList(1, 3, 1)));
+    }
+
+    @Test
+    public void whenCollectionValuesSameThenRemoveValue() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(1, 2, 3));
+        List<Integer> values = new ArrayList<>(Arrays.asList(1, 3));
+        input.removeAll(values);
+        assertThat(input, is(Arrays.asList(2)));
     }
 }

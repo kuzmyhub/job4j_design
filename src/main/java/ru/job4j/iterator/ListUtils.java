@@ -42,11 +42,28 @@ public class ListUtils {
     }
 
     public static <T> void replaceIf(List<T> list, Predicate<T> filter, T value) {
-
+        Objects.requireNonNull(filter);
+        ListIterator<T> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            T element = iterator.next();
+            int index = iterator.previousIndex();
+            if (filter.test(element)) {
+                list.set(index, value);
+            }
+        }
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-
+        ListIterator<T> listIterator = list.listIterator();
+        ListIterator<T> elementsIterator = list.listIterator();
+        while (listIterator.hasNext()) {
+            T value = listIterator.next();
+            while (elementsIterator.hasNext()) {
+                if (value == elementsIterator.next()) {
+                    listIterator.remove();
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
