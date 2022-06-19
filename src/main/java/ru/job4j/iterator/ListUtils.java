@@ -65,19 +65,4 @@ public class ListUtils {
             }
         }
     }
-
-    public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        ListIterator<Integer> it = list.listIterator();
-        while (it.hasNext()) {
-            Integer el = it.next();
-            System.out.println(el);
-        }
-        while (it.hasPrevious()) {
-            System.out.println(it.previous());
-        }
-    }
 }
