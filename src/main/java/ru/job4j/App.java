@@ -1,10 +1,5 @@
 package ru.job4j;
 
-import ru.job4j.collection.LinkedList;
-
-import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
-
 /**
  * Hello world!
  *
