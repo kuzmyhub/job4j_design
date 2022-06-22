@@ -41,7 +41,7 @@ public class SimpleMapTest {
     public void whenPutPairWithSameKeyAndDifferentValue() {
         map.put(1, "First pair");
         map.put(1, "Second pair");
-        assertThat(map.get(1), is("Second pair"));
+        assertThat(map.get(1), is("First pair"));
     }
 
     @Test

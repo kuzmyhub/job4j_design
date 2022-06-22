@@ -27,15 +27,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
         MapEntry<K, V> p = table[i];
         if (p == null) {
             table[i] = new MapEntry<>(key, value);
-            rsl = true;
             count++;
-        } else if (hash(p.key.hashCode()) == hash(key.hashCode())
-        && key.equals(p.key)) {
-            p.value = value;
+            modCount++;
             rsl = true;
-            count++;
         }
-        modCount++;
         return rsl;
     }
 
@@ -49,15 +44,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private void expend() {
         MapEntry<K, V>[] oldTable = table;
-        int oldCap = oldTable.length;
-        int newCap = oldCap * 2;
-        MapEntry<K, V>[] newTable = new MapEntry[newCap];
-        capacity = newTable.length;
-        table = newTable;
-        for (int i = 0; i < oldCap; i++) {
+        table = new MapEntry[capacity * 2];
+        capacity = table.length;
+        for (int i = 0; i < oldTable.length; i++) {
             MapEntry<K, V> e = oldTable[i];
             if (e != null) {
-                newTable[indexFor(hash(e.key.hashCode()))] = e;
+                table[indexFor(hash(e.key.hashCode()))] = e;
             }
         }
     }
@@ -66,8 +58,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V value = null;
         MapEntry<K, V> pair = table[indexFor(hash(key.hashCode()))];
-        if (table != null && table.length > 0 && pair != null) {
-            if (hash(pair.key.hashCode()) == hash(key.hashCode())
+        if (pair != null) {
+            if (pair.key.hashCode() == key.hashCode()
                     && pair.key.equals(key)) {
                 value = pair.value;
             }
@@ -79,14 +71,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public boolean remove(K key) {
         boolean rsl = false;
         MapEntry<K, V> pair = table[indexFor(hash(key.hashCode()))];
-        if (table != null && table.length > 0 && pair != null) {
-            if (hash(pair.key.hashCode()) == hash(key.hashCode())
+        if (pair != null) {
+            if (pair.key.hashCode() == key.hashCode()
                     && pair.key.equals(key)) {
                 table[hash(key.hashCode())] = null;
                 rsl = true;
             }
         }
-        modCount++;
+        modCount--;
         return rsl;
     }
 
