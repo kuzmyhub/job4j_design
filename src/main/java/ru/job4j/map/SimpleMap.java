@@ -3,7 +3,6 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -119,7 +118,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return table[index].key;
+                return table[index++].key;
             }
         };
     }
