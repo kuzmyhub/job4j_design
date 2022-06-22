@@ -18,13 +18,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        int fullness = 0;
-        for (MapEntry<K, V> m : table) {
-            if (m != null) {
-                fullness++;
-            }
-        }
-        float loadFactor = (float) fullness / capacity;
+        float loadFactor = (float) count / capacity;
         if (loadFactor >= LOAD_FACTOR) {
             expend();
         }
@@ -34,17 +28,19 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if (p == null) {
             table[i] = new MapEntry<>(key, value);
             rsl = true;
+            count++;
         } else if (hash(p.key.hashCode()) == hash(key.hashCode())
-        && (p.key == key || key.equals(p.key))) {
+        && key.equals(p.key)) {
             p.value = value;
             rsl = true;
+            count++;
         }
         modCount++;
         return rsl;
     }
 
     public int hash(int hashCode) {
-        return hashCode ^ (hashCode >>> 8);
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
@@ -56,23 +52,23 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int oldCap = oldTable.length;
         int newCap = oldCap * 2;
         MapEntry<K, V>[] newTable = new MapEntry[newCap];
+        capacity = newTable.length;
+        table = newTable;
         for (int i = 0; i < oldCap; i++) {
             MapEntry<K, V> e = oldTable[i];
             if (e != null) {
-                newTable[hash(e.key.hashCode()) & (newCap - 1)] = e;
+                newTable[indexFor(hash(e.key.hashCode()))] = e;
             }
         }
-        capacity = newTable.length;
-        table = newTable;
     }
 
     @Override
     public V get(K key) {
         V value = null;
-        MapEntry<K, V> pair = table[hash(key.hashCode())];
+        MapEntry<K, V> pair = table[indexFor(hash(key.hashCode()))];
         if (table != null && table.length > 0 && pair != null) {
             if (hash(pair.key.hashCode()) == hash(key.hashCode())
-                    && (pair.key == key || pair.key.equals(key))) {
+                    && pair.key.equals(key)) {
                 value = pair.value;
             }
         }
@@ -82,10 +78,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        MapEntry<K, V> pair = table[hash(key.hashCode())];
+        MapEntry<K, V> pair = table[indexFor(hash(key.hashCode()))];
         if (table != null && table.length > 0 && pair != null) {
             if (hash(pair.key.hashCode()) == hash(key.hashCode())
-                    && (pair.key == key || pair.key.equals(key))) {
+                    && pair.key.equals(key)) {
                 table[hash(key.hashCode())] = null;
                 rsl = true;
             }
