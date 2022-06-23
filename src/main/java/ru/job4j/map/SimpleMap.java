@@ -74,7 +74,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if (pair != null) {
             if (pair.key.hashCode() == key.hashCode()
                     && pair.key.equals(key)) {
-                table[hash(key.hashCode())] = null;
+                table[indexFor(hash(key.hashCode()))] = null;
                 rsl = true;
             }
         }
