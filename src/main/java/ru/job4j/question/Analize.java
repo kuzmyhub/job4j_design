@@ -10,6 +10,9 @@ public class Analize {
 
     public static Info diff(Set<User> previous, Set<User> current) {
         Info rsl;
+        int added = 0;
+        int changed = 0;
+        int deleted = 0;
         Map<Integer, String>  prevMap = previous.stream()
                 .collect(Collectors
                         .toMap(User::getId, User::getName)
@@ -18,36 +21,23 @@ public class Analize {
                 .collect(Collectors
                         .toMap(User::getId, User::getName)
                 );
-        int prevSize = prevMap.size();
-        int curSize = curMap.size();
-
-        if (previous.equals(current)) {
-            rsl = new Info(0, 0, 0);
-        } else {
-            Map<Integer, String> valueMap = prevMap;
-            prevMap.remove(current.stream()
-                    .map(x -> x.getId())
-                    .collect(Collectors.toSet())); // удалённые в current
-            curMap.remove(current.stream()
-                    .map(x -> x.getId())
-                    .collect(Collectors.toSet())); // добавленные в currnet
-
-        }
-
-        for (Integer i : curMap.keySet()) {
-            if (!prevMap.containsKey(i)) {
-                rsl.setAdded(rsl.getAdded() + 1);
+        if (!previous.equals(current)) {
+            for (Integer i : curMap.keySet()) {
+                if (!prevMap.containsKey(i)) {
+                    added++;
+                }
+                if (!curMap.get(i).equals(prevMap.get(i))
+                        && prevMap.containsKey(i)) {
+                    changed++;
+                }
             }
-            if (!curMap.get(i).equals(prevMap.get(i))
-                    && prevMap.containsKey(i)) {
-                rsl.setChanged(rsl.getChanged() + 1);
+            for (Integer j : prevMap.keySet()) {
+                if (!curMap.containsKey(j)) {
+                    deleted++;
+                }
             }
         }
-        for (Integer j : prevMap.keySet()) {
-            if (!curMap.containsKey(j)) {
-                rsl.setDeleted(rsl.getDeleted() + 1);
-            }
-        }
+        rsl = new Info(added, changed, deleted);
         return rsl;
     }
 }
