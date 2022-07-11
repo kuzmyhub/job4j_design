@@ -1,8 +1,7 @@
 package ru.job4j.java.io;
 
-import com.sun.source.tree.UsesTree;
-
 import java.io.FileInputStream;
+import java.io.IOException;
 
 public class EvenNumberFile {
     public static void main(String[] args) {
@@ -17,7 +16,7 @@ public class EvenNumberFile {
             for (int i = 0; i < strArray.length; i++) {
                 System.out.println((Integer.parseInt(strArray[i]) % 2) == 0);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
