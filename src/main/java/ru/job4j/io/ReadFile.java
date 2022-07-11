@@ -1,4 +1,4 @@
-package ru.job4j.java.io;
+package ru.job4j.io;
 
 import java.io.*;
 import java.util.ArrayList;
