@@ -3,7 +3,6 @@ package ru.job4j.io;
 import java.io.*;
 
 public class Analizy {
-
     public void unavailable(String source, String target) {
         StringBuilder str = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(source))) {
