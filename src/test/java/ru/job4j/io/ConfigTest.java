@@ -37,11 +37,4 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
     }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void whenPairWithoutSeparator() {
-        String path = "./data/pair_without_separator.properties";
-        Config config = new Config(path);
-        config.load();
-    }
 }

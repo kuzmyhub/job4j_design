@@ -22,16 +22,19 @@ public class Config {
         )) {
             String[] strArray;
             String read;
+            int count = -1;
             while ((read = in.readLine()) != null) {
-                 if (read.length() > 0
-                         && (read.indexOf("#") != 0)) {
+                count++;
+                if (!read.isBlank()
+                        && !read.startsWith("#")
+                        && read.contains("=")) {
                     strArray = read.split("=", 2);
-                    if (!read.contains("=")
-                            || strArray.length < 2
-                            || read.indexOf("=") == 0
-                            || read.indexOf("=") == read.length() - 1) {
+                    if (strArray[0].isBlank()
+                            || strArray[1].isBlank()) {
                         throw new IllegalArgumentException(
-                                "Does not match the template \"key=value\""
+                                "String №"
+                                        + count
+                                        + " does not match the template \"key=value\""
                         );
                     }
                     values.put(strArray[0], strArray[1]);
