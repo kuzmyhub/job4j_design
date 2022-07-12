@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 
 public class ConfigTest {
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = UnsupportedOperationException.class)
     public void whenPairWithoutComment() {
         String path = "./data/pair_without_comment.properties";
         Config config = new Config(path);
