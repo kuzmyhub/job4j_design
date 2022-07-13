@@ -5,33 +5,26 @@ import java.io.*;
 public class Analizy {
     public void unavailable(String source, String target) {
         StringBuilder str = new StringBuilder();
-        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(source));
+        PrintWriter out = new PrintWriter(new FileOutputStream(target))) {
             String read;
             boolean selector = true;
             while ((read = in.readLine()) != null) {
                 if ((read.contains("400")
                         || read.contains("500")) && selector) {
                     String[] strArray = read.split(" ", 2);
-                    str.append(strArray[1]);
-                    str.append(";");
+                    out.print(strArray[1]);
+                    out.print(";");
                     selector = false;
                 } else if (!selector
                         && !read.contains("400")
                         && !read.contains("500")) {
                     String[] strArray = read.split(" ");
                     selector = true;
-                    str.append(strArray[1]);
-                    str.append(System.lineSeparator());
+                    out.print(strArray[1]);
+                    out.print(System.lineSeparator());
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try (PrintWriter out = new PrintWriter(
-                new FileOutputStream(target))) {
-            String rsl = str.toString();
-            out.println(rsl);
-            System.out.println(rsl);
         } catch (IOException e) {
             e.printStackTrace();
         }
