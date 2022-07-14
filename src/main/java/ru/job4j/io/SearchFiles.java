@@ -15,9 +15,9 @@ import java.util.stream.Stream;
 
 public class SearchFiles extends SimpleFileVisitor<Path> {
 
-    Predicate<Path> pred;
+    private Predicate<Path> pred;
 
-    List<Path> list = new ArrayList<>();
+    private List<Path> list = new ArrayList<>();
 
     public SearchFiles(Predicate<Path> pred) {
         this.pred = pred;
