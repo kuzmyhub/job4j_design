@@ -9,11 +9,12 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
+        validation(args);
+        Path start = Paths.get(args[0]);
         search(start,
                 p -> p.toFile()
                         .getName()
-                        .endsWith(".js"))
+                        .endsWith(args[1]))
                 .forEach(System.out::println);
     }
 
@@ -21,5 +22,17 @@ public class Search {
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
+    }
+
+    public static void validation(String[] args) {
+        if (args.length < 2) {
+            throw new IllegalArgumentException(
+                    "Run the program with the parameters:"
+                            + System.lineSeparator()
+                            + "args[0] - initial folder"
+                            + System.lineSeparator()
+                            + "args[1] - file extension"
+            );
+        }
     }
 }
