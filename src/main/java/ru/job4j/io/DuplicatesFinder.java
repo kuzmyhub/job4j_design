@@ -12,6 +12,10 @@ public class DuplicatesFinder {
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
         Files.walkFileTree(Path.of("."), duplicatesVisitor);
         Map<FileProperty, List<Path>> map = duplicatesVisitor.getFiles();
+        printResult(map);
+    }
+
+    private static void printResult(Map<FileProperty, List<Path>> map) {
         for (FileProperty f : map.keySet()) {
             List<Path> list = map.get(f);
             if (list.size() >= 2) {
