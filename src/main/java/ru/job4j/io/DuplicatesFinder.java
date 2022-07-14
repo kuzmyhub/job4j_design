@@ -14,13 +14,15 @@ public class DuplicatesFinder {
         Map<FileProperty, List<Path>> map = duplicatesVisitor.getFiles();
         for (FileProperty f : map.keySet()) {
             List<Path> list = map.get(f);
-            System.out.println(f.getName()
-                    + " - "
-                    + f.getSize());
-            for (Path p : list) {
-                System.out.println(p);
+            if (list.size() >= 2) {
+                System.out.println(f.getName()
+                        + " - "
+                        + f.getSize());
+                for (Path p : list) {
+                    System.out.println(p);
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 }

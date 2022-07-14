@@ -15,34 +15,17 @@ import java.util.HashMap;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    private List<FileProperty> list = new ArrayList<>();
-
-    private Set<FileProperty> setDup = new HashSet<>();
-
-    private Set<FileProperty> setAllValues = new HashSet<>();
-
     private Map<FileProperty, List<Path>> map = new HashMap<>();
-
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         FileProperty fileProperty = new FileProperty(Files.size(file), file.getFileName().toString());
-        list.add(fileProperty);
-        setAllValues.add(fileProperty);
         map.putIfAbsent(fileProperty, new ArrayList<>());
         map.get(fileProperty).add(file);
         return FileVisitResult.CONTINUE;
     }
 
     public Map<FileProperty, List<Path>> getFiles() {
-        for (FileProperty f : setAllValues) {
-            list.remove(f);
-        }
-        setDup.addAll(list);
-        setAllValues.removeAll(setDup);
-        for (FileProperty f : setAllValues) {
-            map.remove(f);
-        }
         return map;
     }
 }
