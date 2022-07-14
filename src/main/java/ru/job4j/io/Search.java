@@ -25,13 +25,11 @@ public class Search {
     }
 
     public static void validation(String[] args) {
-        if (args.length < 2) {
+        if (args.length < 2
+                || !args[0].startsWith("C")
+                || !args[1].contains(".")) {
             throw new IllegalArgumentException(
-                    "Run the program with the parameters:"
-                            + System.lineSeparator()
-                            + "args[0] - initial folder"
-                            + System.lineSeparator()
-                            + "args[1] - file extension"
+                    "Usage java -jar Search.java ROOT_FOLDER FILE_EXTENSION"
             );
         }
     }
