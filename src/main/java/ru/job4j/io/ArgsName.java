@@ -22,20 +22,26 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String s : args) {
-            String str = s.replaceFirst("-", "");
-            String[] strArr = str.split("=", 2);
+            String[] strArr = s.split("=", 2);
             if (strArr.length < 2
-                    || strArr[0].isBlank()
+                    || !strArr[0].startsWith("-")
+                    || strArr[0].length() < 2
                     || strArr[1].isBlank()) {
                 throw new IllegalArgumentException(String.format(
-                        "\"%s\" does not match the template \"key=value\"", s
+                        "\"%s\" does not match the template \"-key=value\"", s
                 ));
             }
-            values.put(strArr[0], strArr[1]);
+            String replace = strArr[0].replaceFirst("-", "");
+            values.put(replace, strArr[1]);
         }
     }
 
     public static ArgsName of(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException(
+                    "Parameters were not passed"
+            );
+        }
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;

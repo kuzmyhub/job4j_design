@@ -39,7 +39,6 @@ public class ArgsNameTest {
     @Test(expected = IllegalArgumentException.class)
     public void whenIsEmpty() {
         ArgsName jvm = ArgsName.of(new String[] {});
-        jvm.get("encoding");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -52,9 +51,8 @@ public class ArgsNameTest {
         ArgsName jvm = ArgsName.of(new String[] {"-encondingUTF-8"});
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void whenSymbolDashIsMissing() {
-        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512"});
-        assertThat(jvm.get("Xmx"), is("512"));
+        ArgsName jvm = ArgsName.of(new String[] {"Xmx=512"});
     }
 }
