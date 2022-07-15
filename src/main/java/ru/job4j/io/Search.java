@@ -1,5 +1,6 @@
 package ru.job4j.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,11 +26,23 @@ public class Search {
     }
 
     public static void validation(String[] args) {
-        if (args.length < 2
-                || !args[0].startsWith("C")
-                || !args[1].contains(".")) {
+        if (args.length < 2) {
             throw new IllegalArgumentException(
                     "Usage java -jar Search.java ROOT_FOLDER FILE_EXTENSION"
+            );
+        }
+        File file = new File(args[0]);
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "Not exist %s", file.getAbsolutePath()
+            ));
+        } else if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format(
+                    "Not directory %s", file.getAbsoluteFile()
+            ));
+        } else if (!args[1].startsWith(".")) {
+            throw new IllegalArgumentException(
+                    "File extension format \".extension\""
             );
         }
     }
