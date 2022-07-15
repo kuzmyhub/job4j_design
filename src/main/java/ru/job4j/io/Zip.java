@@ -10,7 +10,21 @@ import java.nio.file.Path;
 public class Zip {
 
     public void packFiles(List<Path> sources, File target) {
-
+        try (ZipOutputStream zip = new ZipOutputStream(
+                new BufferedOutputStream(
+                        new FileOutputStream(target)
+                ))) {
+            for (Path p : sources) {
+                zip.putNextEntry(new ZipEntry(p.toString()));
+                try (BufferedInputStream out = new BufferedInputStream(
+                        new FileInputStream(p.toString())
+                )) {
+                    zip.write((out.readAllBytes()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void packSingleFile(File source, File target) {
