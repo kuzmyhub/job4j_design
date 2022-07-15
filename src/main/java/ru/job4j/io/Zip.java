@@ -22,6 +22,7 @@ public class Zip {
                     zip.write((out.readAllBytes()));
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
