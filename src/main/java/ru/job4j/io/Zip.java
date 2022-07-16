@@ -58,7 +58,7 @@ public class Zip {
         Search.validation(argsArr);
         Path path = Paths.get(argsName.get("d"));
         List<Path> list = Search.search(path,
-                x -> x.toFile()
+                x -> !x.toFile()
                         .getName()
                         .endsWith(argsName.get("e")));
         zip.packFiles(list, new File(argsName.get("o")));
