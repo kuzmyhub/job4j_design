@@ -10,6 +10,8 @@ public class CSVReader {
     public static void main(String[] args) throws FileNotFoundException {
         File file = new File("./CSVreader/table.csv");
         Scanner scanner = new Scanner(file);
-        String[] str;
+        String str = scanner.nextLine();
+        String[] strArr = str.split(";");
+
     }
 }
