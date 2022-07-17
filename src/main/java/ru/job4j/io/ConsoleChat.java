@@ -19,29 +19,21 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    public void run() {
-        List<String> user = readPhrases();
-        List<String> bot = new ArrayList<>();
+    public void run() throws IOException {
+        List<String> bot = readPhrases();
         Random random = new Random();
         List<String> conversation = new ArrayList<>();
-        try (BufferedReader in = new BufferedReader(
-                new FileReader(
-                        botAnswers,
-                        Charset.forName("WINDOWS-1251"
-                )))) {
-            in.lines().forEach(bot::add);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         int botQuantity = bot.size();
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(System.in));
         String trigger = "продолжить";
-        int counter = 0;
         while (!trigger.equals("закончить")) {
-            conversation.add(user.get(counter));
-            if (user.get(counter).equals("продолжить")
-                    || user.get(counter).equals("стоп")
-                    || user.get(counter).equals("закончить")) {
-                trigger = user.get(counter);
+            String phrase = in.readLine();
+            conversation.add(phrase);
+            if (phrase.equals("продолжить")
+                    || phrase.equals("стоп")
+                    || phrase.equals("закончить")) {
+                trigger = phrase;
             }
             if (!trigger.equals("стоп")
                     && !trigger.equals("закончить")) {
@@ -50,24 +42,27 @@ public class ConsoleChat {
                         .findFirst()
                         .getAsInt();
                 conversation.add(bot.get(index));
+                System.out.println(bot.get(index));
             }
-            if (counter != user.size() - 1) {
-                counter++;
+            if (trigger.equals("закончить")) {
+                break;
             }
         }
         saveLog(conversation);
     }
 
     private List<String> readPhrases() {
-        List<String> userAnswers = new ArrayList<>();
+        List<String> botPhrases = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(
-                new FileReader("./ConsoleChat/userPhrases.txt", Charset.forName("WINDOWS-1251"))
-        )) {
-            in.lines().forEach(userAnswers::add);
+                new FileReader(
+                        "./ConsoleChat/botAnswers.txt",
+                        Charset.forName("WINDOWS-1251")
+                ))) {
+            in.lines().forEach(botPhrases::add);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return userAnswers;
+        return botPhrases;
     }
 
     private void saveLog(List<String> log) {
@@ -82,7 +77,7 @@ public class ConsoleChat {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ConsoleChat cc = new ConsoleChat(
                 "./ConsoleChat/chatHistory.txt",
                 "./ConsoleChat/botAnswers.txt"
