@@ -58,7 +58,8 @@ public class ConsoleChat {
                         "./ConsoleChat/botAnswers.txt",
                         Charset.forName("WINDOWS-1251")
                 ))) {
-            in.lines().forEach(botPhrases::add);
+            in.lines().
+                    forEach(botPhrases::add);
         } catch (IOException e) {
             e.printStackTrace();
         }

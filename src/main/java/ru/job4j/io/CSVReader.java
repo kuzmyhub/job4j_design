@@ -11,6 +11,5 @@ public class CSVReader {
         File file = new File("./CSVreader/table.csv");
         Scanner scanner = new Scanner(file);
         String[] str;
-        str =
     }
 }
