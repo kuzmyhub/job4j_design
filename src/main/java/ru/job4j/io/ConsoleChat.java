@@ -27,16 +27,16 @@ public class ConsoleChat {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(System.in));
         String trigger = "продолжить";
-        while (!trigger.equals("закончить")) {
+        while (!OUT.equals(trigger)) {
             String phrase = in.readLine();
             conversation.add(phrase);
-            if (phrase.equals("продолжить")
-                    || phrase.equals("стоп")
-                    || phrase.equals("закончить")) {
+            if (CONTINUE.equals(phrase)
+                    || STOP.equals(phrase)
+                    || OUT.equals(phrase)) {
                 trigger = phrase;
             }
-            if (!trigger.equals("стоп")
-                    && !trigger.equals("закончить")) {
+            if (!STOP.equals(trigger)
+                    && !OUT.equals(trigger)) {
                 int index = random.
                         ints(0, botQuantity)
                         .findFirst()
@@ -44,7 +44,7 @@ public class ConsoleChat {
                 conversation.add(bot.get(index));
                 System.out.println(bot.get(index));
             }
-            if (trigger.equals("закончить")) {
+            if (OUT.equals(trigger)) {
                 break;
             }
         }
