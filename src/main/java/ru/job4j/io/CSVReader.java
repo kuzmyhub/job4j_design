@@ -14,6 +14,7 @@ public class CSVReader {
 
     public static void main(String[] args) throws FileNotFoundException {
         CSVReader csvReader = CSVReader.of(args);
+        validation(args, csvReader);
         File file = new File(csvReader.values.get("path"));
         Scanner columnScanner = new Scanner(file);
         String[] columnNames = columnScanner.nextLine().split(";");
@@ -29,9 +30,6 @@ public class CSVReader {
                 counter++;
             }
             columArrIndex++;
-        }
-        for (int i : columnNumbers) {
-            System.out.println(i);
         }
         Scanner scanner = new Scanner(file);
         StringBuilder stringBuilder = new StringBuilder();
@@ -60,35 +58,48 @@ public class CSVReader {
         }
     }
 
-    public static String[] getColumnNames(CSVReader csvReader) throws FileNotFoundException {
-        File file = new File(csvReader.values.get("path"));
-        Scanner columnScanner = new Scanner(file);
-        return columnScanner.nextLine().split(";");
-    }
-
-    public static void validation(String[] args, CSVReader csvReader) {
+    public static void validation(String[] args, CSVReader csvReader) throws FileNotFoundException {
         File fileIn = new File(csvReader.values.get("path"));
         if (!fileIn.exists()) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist", fileIn.getAbsolutePath()
             ));
         }
-        if (csvReader.values.get("delimiter").equals("")) {
-            throw new IllegalArgumentException("Separator is not set");
+        if (csvReader.values.get("delimiter").length() > 1) {
+            throw new IllegalArgumentException("Separator format "
+                    + "-delimiter=\";\"");
         }
         File fileOut = new File(csvReader.values.get("out"));
         if (!fileOut.exists()
                 && !csvReader.values.get("out").equals("stdout")) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist. "
-                            + System.lineSeparator()
                             + "Specify file path "
-                            + "\"C:\\...\" format "
+                            + "\"C:\\...\\FILE.EXTENSION\" format "
                             + "or use \"stdout\" command"
                     , csvReader.values.get("out")
             ));
         }
-
+        File file = new File(csvReader.values.get("path"));
+        Scanner columnScanner = new Scanner(file);
+        String[] columnNames = columnScanner.nextLine().split(";");
+        String[] columnFilter = csvReader.values.get("filter").split(",");
+        for (String cf : columnFilter) {
+            boolean trigger = false;
+            for (String cn : columnNames) {
+                if (cf.equals(cn)) {
+                    trigger = true;
+                }
+            }
+            if (!trigger) {
+                throw new IllegalArgumentException(String.format(
+                        "Column %s not found. "
+                                + "Column filter format "
+                                + "\"-filter=COLUMN_NAME1, COLUMN_NAME2...\"",
+                        cf
+                ));
+            }
+        }
     }
 
     private void parse(String[] args) {
