@@ -14,11 +14,15 @@ public class CSVReader {
 
     public static void main(String[] args) throws FileNotFoundException {
         CSVReader csvReader = CSVReader.of(args);
-        validation(args, csvReader);
-        File file = new File(csvReader.values.get("path"));
+        validation(csvReader.values);
+        getDate(csvReader.values);
+    }
+
+    public static void getDate(Map<String, String> values) throws FileNotFoundException {
+        File file = new File(values.get("path"));
         Scanner columnScanner = new Scanner(file);
         String[] columnNames = columnScanner.nextLine().split(";");
-        String[] columnFilter = csvReader.values.get("filter").split(",");
+        String[] columnFilter = values.get("filter").split(",");
         int[] columnNumbers = new int[columnFilter.length];
         int columArrIndex = 0;
         for (String cf : columnFilter) {
@@ -38,52 +42,62 @@ public class CSVReader {
             for (int i = 0; i < columnNumbers.length; i++) {
                 stringBuilder.append(tmp[columnNumbers[i]]);
                 if (i < columnNumbers.length - 1) {
-                    stringBuilder.append(csvReader.values.get("delimiter"));
+                    stringBuilder.append(values.get("delimiter"));
                 } else {
                     stringBuilder.append(System.lineSeparator());
                 }
             }
         }
-        if (csvReader.values.get("out").equals("stdout")) {
+        if (values.get("out").equals("stdout")) {
             System.out.println(stringBuilder);
         } else {
             try (PrintWriter out = new PrintWriter(
                     new FileOutputStream(
-                            csvReader.values.get("out")
+                            values.get("out")
                     ))) {
-                out.println(stringBuilder);
+                out.print(stringBuilder);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void validation(String[] args, CSVReader csvReader) throws FileNotFoundException {
-        File fileIn = new File(csvReader.values.get("path"));
+    public static void handle(ArgsName argsName) throws FileNotFoundException {
+        Map<String, String> argsNameValues = new HashMap<>();
+        argsNameValues.put("path", argsName.get("path"));
+        argsNameValues.put("delimiter", argsName.get("delimiter"));
+        argsNameValues.put("out", argsName.get("out"));
+        argsNameValues.put("filter", argsName.get("filter"));
+        validation(argsNameValues);
+        getDate(argsNameValues);
+    }
+
+    public static void validation(Map<String, String> values) throws FileNotFoundException {
+        File fileIn = new File(values.get("path"));
         if (!fileIn.exists()) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist", fileIn.getAbsolutePath()
             ));
         }
-        if (csvReader.values.get("delimiter").length() > 1) {
+        if (values.get("delimiter").length() > 1) {
             throw new IllegalArgumentException("Separator format "
                     + "-delimiter=\";\"");
         }
-        File fileOut = new File(csvReader.values.get("out"));
+        File fileOut = new File(values.get("out"));
         if (!fileOut.exists()
-                && !csvReader.values.get("out").equals("stdout")) {
+                && !values.get("out").equals("stdout")) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist. "
                             + "Specify file path "
                             + "\"C:\\...\\FILE.EXTENSION\" format "
                             + "or use \"stdout\" command",
-                    csvReader.values.get("out")
+                    values.get("out")
             ));
         }
-        File file = new File(csvReader.values.get("path"));
+        File file = new File(values.get("path"));
         Scanner columnScanner = new Scanner(file);
         String[] columnNames = columnScanner.nextLine().split(";");
-        String[] columnFilter = csvReader.values.get("filter").split(",");
+        String[] columnFilter = values.get("filter").split(",");
         for (String cf : columnFilter) {
             boolean trigger = false;
             for (String cn : columnNames) {
