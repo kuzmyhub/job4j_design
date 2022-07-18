@@ -35,20 +35,60 @@ public class CSVReader {
         }
         Scanner scanner = new Scanner(file);
         StringBuilder stringBuilder = new StringBuilder();
-        if (csvReader.values.get("out").equals("stdout")) {
-            while (scanner.hasNextLine()) {
-                String[] tmp = scanner.nextLine().split(";");
-                for (int i = 0; i < columnNumbers.length; i++) {
-                    stringBuilder.append(tmp[columnNumbers[i]]);
-                    if (i < columnNumbers.length - 1) {
-                        stringBuilder.append(csvReader.values.get("delimiter"));
-                    } else {
-                        stringBuilder.append(System.lineSeparator());
-                    }
+        while (scanner.hasNextLine()) {
+            String[] tmp = scanner.nextLine().split(";");
+            for (int i = 0; i < columnNumbers.length; i++) {
+                stringBuilder.append(tmp[columnNumbers[i]]);
+                if (i < columnNumbers.length - 1) {
+                    stringBuilder.append(csvReader.values.get("delimiter"));
+                } else {
+                    stringBuilder.append(System.lineSeparator());
                 }
             }
-            System.out.println(stringBuilder);
         }
+        if (csvReader.values.get("out").equals("stdout")) {
+            System.out.println(stringBuilder);
+        } else {
+            try (PrintWriter out = new PrintWriter(
+                    new FileOutputStream(
+                            csvReader.values.get("out")
+                    ))) {
+                out.println(stringBuilder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String[] getColumnNames(CSVReader csvReader) throws FileNotFoundException {
+        File file = new File(csvReader.values.get("path"));
+        Scanner columnScanner = new Scanner(file);
+        return columnScanner.nextLine().split(";");
+    }
+
+    public static void validation(String[] args, CSVReader csvReader) {
+        File fileIn = new File(csvReader.values.get("path"));
+        if (!fileIn.exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "%s not exist", fileIn.getAbsolutePath()
+            ));
+        }
+        if (csvReader.values.get("delimiter").equals("")) {
+            throw new IllegalArgumentException("Separator is not set");
+        }
+        File fileOut = new File(csvReader.values.get("out"));
+        if (!fileOut.exists()
+                && !csvReader.values.get("out").equals("stdout")) {
+            throw new IllegalArgumentException(String.format(
+                    "%s not exist. "
+                            + System.lineSeparator()
+                            + "Specify file path "
+                            + "\"C:\\...\" format "
+                            + "or use \"stdout\" command"
+                    , csvReader.values.get("out")
+            ));
+        }
+
     }
 
     private void parse(String[] args) {
