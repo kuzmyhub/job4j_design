@@ -76,8 +76,8 @@ public class CSVReader {
                     "%s not exist. "
                             + "Specify file path "
                             + "\"C:\\...\\FILE.EXTENSION\" format "
-                            + "or use \"stdout\" command"
-                    , csvReader.values.get("out")
+                            + "or use \"stdout\" command",
+                    csvReader.values.get("out")
             ));
         }
         File file = new File(csvReader.values.get("path"));
