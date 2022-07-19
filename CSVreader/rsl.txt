@@ -1,0 +1,4 @@
+name;age
+Andrey;22
+Sasha;40
+Olga;32
