@@ -1,12 +1,8 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.StringJoiner;
+import java.util.*;
 import java.io.File;
-import java.util.Map;
 
 public class CSVReader {
 
@@ -74,17 +70,19 @@ public class CSVReader {
 
     public static void validation(Map<String, String> values) throws FileNotFoundException {
         File fileIn = new File(values.get("path"));
-        if (!fileIn.exists()) {
+        if (!fileIn.exists() || fileIn.isDirectory()) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist", fileIn.getAbsolutePath()
             ));
         }
-        if (values.get("delimiter").length() > 1) {
+        if (values.get("delimiter").length() > 1
+                || !List.of(";", ":", "|", "\\", "/", " ")
+                .contains(values.get("delimiter"))) {
             throw new IllegalArgumentException("Separator format "
                     + "-delimiter=\";\"");
         }
         File fileOut = new File(values.get("out"));
-        if (!fileOut.exists()
+        if ((!fileOut.exists() || fileOut.isDirectory())
                 && !values.get("out").equals("stdout")) {
             throw new IllegalArgumentException(String.format(
                     "%s not exist. "
