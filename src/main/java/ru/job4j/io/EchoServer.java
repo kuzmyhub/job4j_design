@@ -25,9 +25,7 @@ public class EchoServer {
                         out.write("Hello.".getBytes());
                     } else if (inMsg.contains("?msg=Exit")) {
                         server.close();
-                    } else if (inMsg.contains("?msg=")
-                            && !in.readLine().contains("?msg=Hello")
-                            && !in.readLine().contains("?msg=Exit")) {
+                    } else if (inMsg.contains("?msg=")) {
                         out.write("What.".getBytes());
                     }
                     for (String str = in.readLine(); str != null
