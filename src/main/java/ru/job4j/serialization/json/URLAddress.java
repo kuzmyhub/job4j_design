@@ -10,7 +10,7 @@ public class URLAddress {
     @Override
     public String toString() {
         return "URLAddress{"
-                + "address='" + address + '\'' +
-                '}';
+                + "address='" + address + '\''
+                + '}';
     }
 }

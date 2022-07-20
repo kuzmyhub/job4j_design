@@ -18,11 +18,11 @@ public class Site {
 
     @Override
     public String toString() {
-        return "Site{" +
-                "isWorking=" + isWorking +
-                ", visitors=" + visitors +
-                ", urlAddress=" + urlAddress +
-                ", themes=" + Arrays.toString(themes) +
-                '}';
+        return "Site{"
+                + "isWorking=" + isWorking
+                + ", visitors=" + visitors
+                + ", urlAddress=" + urlAddress
+                + ", themes=" + Arrays.toString(themes)
+                + '}';
     }
 }
