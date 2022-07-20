@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<office>
+	<isEmpty>false</isEmpty>
+	<staff>2</staff>
+	<officeNumber>
+		<number>I-110</number>
+	</officeNumber>
+	<whose>
+		<who>Zhenya</who>
+		<who>Sasha</who>
+	</whose>
+</office>
