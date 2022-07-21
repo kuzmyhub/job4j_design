@@ -16,6 +16,22 @@ public class Site {
         this.themes = themes;
     }
 
+    public boolean isWorking() {
+        return isWorking;
+    }
+
+    public int getVisitors() {
+        return visitors;
+    }
+
+    public URLAddress getUrlAddress() {
+        return urlAddress;
+    }
+
+    public String[] getThemes() {
+        return themes;
+    }
+
     @Override
     public String toString() {
         return "Site{"
