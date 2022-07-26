@@ -27,7 +27,6 @@ public class Find {
                     .contains(argsName.get("n"));
         }
         List<Path> list = Search.search(Paths.get(argsName.get("d")), predicate);
-
          try (BufferedWriter out = new BufferedWriter(
                  new PrintWriter(argsName.get("o"))
          )) {
