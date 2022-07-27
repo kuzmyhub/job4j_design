@@ -1,0 +1,15 @@
+c:\projects\job4j_design\.idea\checkstyleidea-libs\readme.txt
+c:\projects\job4j_design\404.txt
+c:\projects\job4j_design\ConsoleChat\botAnswers.txt
+c:\projects\job4j_design\ConsoleChat\chatHistory.txt
+c:\projects\job4j_design\ConsoleChat\userPhrases.txt
+c:\projects\job4j_design\CSVreader\rsl.txt
+c:\projects\job4j_design\even.txt
+c:\projects\job4j_design\Find\log.txt
+c:\projects\job4j_design\input.txt
+c:\projects\job4j_design\log.txt
+c:\projects\job4j_design\logs\debug.txt
+c:\projects\job4j_design\server\source.txt
+c:\projects\job4j_design\ZipFile\404.txt
+c:\projects\job4j_design\ZipFile\even.txt
+c:\projects\job4j_design\ZipFile\input.txt

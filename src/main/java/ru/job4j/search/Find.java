@@ -3,10 +3,7 @@ package ru.job4j.search;
 import ru.job4j.io.ArgsName;
 import ru.job4j.io.Search;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.*;
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,12 +23,13 @@ public class Find {
             predicate = p -> matcher.matches(p.getFileName());
         }
         List<Path> list = Search.search(Paths.get(argsName.get("d")), predicate);
-         try (BufferedWriter out = new BufferedWriter(
-                 new PrintWriter(argsName.get("o"))
-         )) {
-             for (Path p : list) {
-                 out.write(p.toString() + System.lineSeparator());
-             }
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(argsName.get("o"))
+                ))) {
+            for (Path p : list) {
+                out.println(p.toString());
+            }
          } catch (IOException e) {
              e.printStackTrace();
          }
