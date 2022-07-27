@@ -7,8 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -22,16 +21,16 @@ public class Find {
                     .getName()
                     .contains(argsName.get("n"));
         } else if (argsName.get("t").equals("mask")) {
-            predicate = p -> p.toFile()
-                    .getName()
-                    .contains(argsName.get("n"));
+            FileSystem fs = FileSystems.getDefault();
+            PathMatcher matcher = fs.getPathMatcher("glob:" + argsName.get("n"));
+            predicate = p -> matcher.matches(p.getFileName());
         }
         List<Path> list = Search.search(Paths.get(argsName.get("d")), predicate);
          try (BufferedWriter out = new BufferedWriter(
                  new PrintWriter(argsName.get("o"))
          )) {
              for (Path p : list) {
-                 out.write(p.toString());
+                 out.write(p.toString() + System.lineSeparator());
              }
          } catch (IOException e) {
              e.printStackTrace();
