@@ -1,22 +1,26 @@
-create table products(
+create table specialty(
 id serial primary key,
 name varchar(255)
 );
 
-create table electronicsManufacture(
+create table students(
 id serial primary key,
 name varchar(255),
-products_id int references products(id)
+specialty_id int references specialty(id)
 );
 
-insert into products(name) values ('phone');
-insert into products(name) values ('hairdryer');
-insert into products(name) values ('irrigator');
-insert into electronicsManufacture(name, products_id) VALUES ('LD', 1);
-insert into electronicsManufacture(name, products_id) VALUES ('LD', 2);
-insert into electronicsManufacture(name, products_id) VALUES ('LD', 3);
-insert into electronicsManufacture(name, products_id) VALUES ('Xioomy', 1);
-insert into electronicsManufacture(name, products_id) VALUES ('Sonya', 1);
+insert into specialty(name) values ('construction');
+insert into specialty(name) values ('programming');
+insert into specialty(name) values ('economics');
 
-select * from products;
-select * from electronicsManufacture where id in (select id from products);
+insert into students(name, specialty_id)
+values ('Zhenya', 2);
+insert into students(name, specialty_id)
+values ('Olga', 1);
+insert into students(name, specialty_id)
+values ('Viktor', 3);
+insert into students(name, specialty_id)
+values ('Sergey', 1);
+
+select * from specialty;
+select * from students;
