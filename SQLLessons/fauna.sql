@@ -2,7 +2,7 @@ create table fauna(
 id serial primary key,
 name text,
 avg_age int,
-disocvery_date date
+discovery_date date
 );
 
 insert into fauna(name, avg_age, discovery_date)
