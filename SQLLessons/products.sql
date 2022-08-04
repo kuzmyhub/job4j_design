@@ -69,7 +69,7 @@ where t.name = 'cheese';
 
 select name from product where name like '%icecream%';
 
-select name from product where expired_date < '2022-08-04';
+select name from product where expired_date < current_date;
 
 select name from product 
 where price = (select max(price) from product);
