@@ -38,6 +38,11 @@ on d.id = e.departments_id;
 select * from departments d
 cross join employees;
 
+select d.name from departments d
+left outer join employees e
+on d.id = e.departments_id
+where e.id is null;
+
 select * from departments d
 left outer join employees e
 on d.id = e.departments_id;
