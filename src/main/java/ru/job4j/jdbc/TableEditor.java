@@ -2,6 +2,8 @@ package ru.job4j.jdbc;
 
 import ru.job4j.io.Config;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -17,37 +19,74 @@ public class TableEditor implements AutoCloseable {
         initConnection();
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
+        Properties config = new Properties();
+        try (InputStream in = TableEditor.class
+                .getClassLoader()
+                .getResourceAsStream(
+                        "table_editor.properties"
+                )) {
+            config.load(in);
+        }
+        TableEditor tableEditor = new TableEditor(config);
+        tableEditor.initConnection();
+        tableEditor.dropTable("TableEditor");
+        tableEditor.createTable("TableEditor");
+        tableEditor.addColumn("TableEditor", "№", "text");
+        tableEditor.addColumn("TableEditor", "name", "text");
+        tableEditor.addColumn("TableEditor", "count", "text");
+        System.out.println(
+                getTableScheme(tableEditor.connection, "TableEditor")
+        );
     }
 
-    private void initConnection() throws Exception {
-        Config config = new Config("C:\\projects\\job4j_design\\app.properties");
-        config.load();
-        Class.forName(config.value("hibernate.connection.driver_class"));
-        String url = config.value("hibernate.connection.url");
-        String login = config.value("hibernate.connection.username");
-        String password = config.value("hibernate.connection.password");
-        try (Connection connect = DriverManager.getConnection(
-                url, login, password
-        )) {
-            connection = connect;
+    public void statement(String sql) throws Exception {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void createTable(String tableName) {
+    private void initConnection() throws Exception {
+        Class.forName(properties.getProperty("driver_class"));
+        connection = DriverManager.getConnection(
+                properties.getProperty("url"),
+                properties.getProperty("username"),
+                properties.getProperty("password"));
     }
 
-    public void dropTable(String tableName) {
+    public void createTable(String tableName) throws Exception {
+        String sql = String.format(
+                "create table if not exists %s();",
+                tableName
+        );
+        statement(sql);
     }
 
-    public void addColumn(String tableName, String columnName, String type) {
+    public void dropTable(String tableName) throws Exception {
+        String sql = String.format("drop table %s", tableName);
+        statement(sql);
+    }
+
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
+        String sql = String.format(
+                "alter table %s add %s %s", tableName, columnName, type
+        );
+        statement(sql);
     }
 
     public void dropColumn(String tableName, String columnName) {
+        String sql = String.format(
+                "alter table %s drop column %s", tableName, columnName
+        );
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
+        String sql = String.format(
+                "alter table %s rename column %s to %s",
+                tableName, columnName, newColumnName
+        );
     }
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
