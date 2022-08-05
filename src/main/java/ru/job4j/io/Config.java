@@ -1,8 +1,11 @@
 package ru.job4j.io;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -44,9 +47,18 @@ public class Config {
     }
 
     public String value(String key) {
-        throw new UnsupportedOperationException(
-                "Don't impl this method yet!"
-        );
+        Path file = Path.of(this.path);
+        if (!Files.isRegularFile(file)) {
+            throw new IllegalArgumentException(String.format(
+                    "Not file %s", this.path
+            ));
+        }
+        if (!values.containsKey(key)) {
+            throw new IllegalArgumentException(String.format(
+                    "%s is missing", key
+            ));
+        }
+        return values.get(key);
     }
 
     @Override
