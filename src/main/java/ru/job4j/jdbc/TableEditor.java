@@ -1,9 +1,8 @@
 package ru.job4j.jdbc;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import ru.job4j.io.Config;
+
+import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -13,13 +12,27 @@ public class TableEditor implements AutoCloseable {
 
     private Properties properties;
 
-    public TableEditor(Properties properties) {
+    public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() {
-        connection = null;
+    public static void main(String[] args) {
+
+    }
+
+    private void initConnection() throws Exception {
+        Config config = new Config("C:\\projects\\job4j_design\\app.properties");
+        config.load();
+        Class.forName(config.value("hibernate.connection.driver_class"));
+        String url = config.value("hibernate.connection.url");
+        String login = config.value("hibernate.connection.username");
+        String password = config.value("hibernate.connection.password");
+        try (Connection connect = DriverManager.getConnection(
+                url, login, password
+        )) {
+            connection = connect;
+        }
     }
 
     public void createTable(String tableName) {
