@@ -32,11 +32,16 @@ public class TableEditor implements AutoCloseable {
         tableEditor.initConnection();
         tableEditor.dropTable("TableEditor");
         tableEditor.createTable("TableEditor");
-        tableEditor.addColumn("TableEditor", "№", "text");
-        tableEditor.addColumn("TableEditor", "name", "text");
-        tableEditor.addColumn("TableEditor", "count", "text");
-        tableEditor.renameColumn("TableEditor", "count", "quantity");
-        tableEditor.dropColumn("TableEditor", "name");
+        tableEditor.addColumn("TableEditor",
+                "№", "text");
+        tableEditor.addColumn("TableEditor",
+                "name", "text");
+        tableEditor.addColumn("TableEditor",
+                "count", "text");
+        tableEditor.renameColumn("TableEditor",
+                "count", "quantity");
+        tableEditor.dropColumn("TableEditor",
+                "name");
         System.out.println(
                 getTableScheme(tableEditor.connection, "TableEditor")
         );
